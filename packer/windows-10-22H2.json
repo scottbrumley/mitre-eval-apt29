@@ -1,0 +1,47 @@
+{
+    "builders":
+    [
+        {
+            "vm_name": "windows-10-22h2.qcow2",
+            "type": "qemu",
+            "accelerator": "kvm",
+
+            "cpus": 2,
+            "memory": 4096,
+            "disk_size": "30G",
+	    "disk_interface": "virtio",
+	    "headless": true,
+      
+            "iso_url": "/mnt/lab/images/en_windows_10_business_editions_version_1903_x64_dvd_37200948.iso",
+            "iso_checksum": "md5:16806bfff1d40930dfd200204e6105aa",
+
+            "floppy_files":
+            [
+                "packer/base-config/windows10/autounattend.xml", 
+                "packer/base-config/ConfigureRemotingForAnsible.ps1", 
+                "packer/base-config/defender-disable.bat", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/viostor.cat", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/viostor.inf", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/viostor.sys", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/vioscsi.cat", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/vioscsi.inf", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/vioscsi.sys", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/netkvm.cat", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/netkvm.inf", 
+		"packer/base-config/virtio-win/drivers/amd64/Win10/netkvm.sys"
+            ],
+
+            "output_directory": "./base_images/windows10_22H2",
+
+	    "net_device":"virtio-net",
+  	    "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+            "communicator": "winrm",
+            "winrm_username": "Administrator",
+            "winrm_password": "packer",
+            "winrm_use_ssl": "true",
+            "winrm_insecure": "true",
+            "winrm_timeout" : "1h",
+            "shutdown_timeout": "15m"
+        }
+    ]
+}

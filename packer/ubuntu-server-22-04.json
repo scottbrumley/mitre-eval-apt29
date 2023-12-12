@@ -1,0 +1,43 @@
+{
+  "builders": [
+    {
+      "type": "qemu",
+      "iso_url": "/mnt/lab/images/ubuntu-22.04.3-live-server-amd64.iso",
+      "iso_checksum": "md5:2072007c1d5b504c9a4858240e28e669",
+
+      "output_directory": "./base_images/ubuntu2204",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+
+      "headless": true,
+      "disk_size": "30G",
+      "memory": 4096,
+      "format": "qcow2",
+      "accelerator": "kvm",
+      "cpus": 2,
+
+      "http_directory": "http",
+
+      "ssh_username": "admin",
+      "ssh_password": "packerubuntu",
+      "ssh_timeout": "20m",
+      "vm_name": "ubuntu-server-22.04.qcow2",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait>",
+        "e<wait>",
+        "<down><down><down><end>",
+        " autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+        "<f10>"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+    "type": "shell",
+    "inline": ["ls /"]
+    }
+  ]
+}
+
